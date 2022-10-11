@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SuperHero.Data;
+using SuperHero.Infrastructure.Data;
 
 #nullable disable
 
-namespace SuperHero.Migrations
+namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221005212422_Initial")]
-    partial class Initial
+    [Migration("20221011144125_UpdateArchitecture")]
+    partial class UpdateArchitecture
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,7 +23,7 @@ namespace SuperHero.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SuperHero.SuperHero", b =>
+            modelBuilder.Entity("SuperHero.Core.Entities.SuperHeroModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()

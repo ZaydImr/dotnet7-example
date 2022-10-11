@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SuperHero.Data;
+using SuperHero.Infrastructure.Data;
+using SuperHero.Infrastructure.Mappers;
+using SuperHero.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,10 +13,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("API"));
 });
 
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 
 builder.Services.AddCors(options => options.AddPolicy(name: "SuperHeroOrigins",
     policy =>
@@ -22,6 +24,7 @@ builder.Services.AddCors(options => options.AddPolicy(name: "SuperHeroOrigins",
         policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
     }));
 
+builder.Services.AddScoped(typeof(SuperHeroService));
 
 var app = builder.Build();
 
