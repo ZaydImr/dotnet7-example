@@ -10,42 +10,80 @@ namespace SuperHero.API.Controllers
     [ApiController]
     public class SuperHeroController : ControllerBase
     {
-        private readonly SuperHeroService _service;
-        public SuperHeroController(SuperHeroService service) 
+        private readonly ILogger<SuperHeroController> _logger;
+        private readonly ISuperHeroService _service;
+        public SuperHeroController(ILogger<SuperHeroController> logger, ISuperHeroService service) 
         {
+            _logger = logger;
             _service = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<SuperHeroDto>>> GetSuperHeroes()
         {
-            return Ok(await _service.GetSuperHeroes());
+            try
+            {
+                _logger.LogInformation("GetHeroes");
+                return Ok(await _service.GetSuperHeroes());
+            }catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<List<SuperHeroDto>>> CreateSuperHero(SuperHeroDto hero)
         {
-            return Ok(await _service.CreateSuperHero(hero));
+            try
+            {
+                _logger.LogInformation("Add SuperHero");
+                return Ok(await _service.CreateSuperHero(hero));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPut]
         public async Task<ActionResult<List<SuperHeroDto>>> UpdateSuperHero(SuperHeroDto hero)
         {
-            var dbHeroes = await _service.UpdateSuperHero(hero);
-            if (dbHeroes == null)
-                return BadRequest("Hero not found");
+            try
+            {
+                _logger.LogInformation("Update SuperHero");
+                var dbHeroes = await _service.UpdateSuperHero(hero);
+                if (dbHeroes == null)
+                    return NotFound("Hero not found");
 
-            return Ok(dbHeroes);
+                return Ok(dbHeroes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
+            
         }
     
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<SuperHeroDto>>> DeleteSuperHero(int id)
         {
-            var dbHeroes = await _service.DeleteSuperHero(id);
-            if (dbHeroes == null)
-                return BadRequest("Hero not found.");
+            try
+            {
+                _logger.LogInformation("Delete SuperHero");
+                var dbHeroes = await _service.DeleteSuperHero(id);
+                if (dbHeroes == null)
+                    return NotFound("Hero not found.");
 
-            return Ok(dbHeroes);
+                return Ok(dbHeroes);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

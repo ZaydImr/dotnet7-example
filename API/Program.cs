@@ -5,15 +5,17 @@ using SuperHero.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+/*  Services  */
+builder.Services.AddScoped<ISuperHeroService, SuperHeroService>();
+
+/*  EF Configuration  */
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("API"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Infrastructure"));
 });
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
@@ -24,7 +26,6 @@ builder.Services.AddCors(options => options.AddPolicy(name: "SuperHeroOrigins",
         policy.WithOrigins("http://localhost:4200").AllowAnyHeader().AllowAnyMethod();
     }));
 
-builder.Services.AddScoped(typeof(SuperHeroService));
 
 var app = builder.Build();
 
