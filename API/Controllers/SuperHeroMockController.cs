@@ -11,15 +11,14 @@ namespace SuperHero.API.Controllers
     public class SuperHeroMockController : ControllerBase
     {
         private readonly ILogger<SuperHeroController> _logger;
-        private List<SuperHeroViewModel> heros;
-        public SuperHeroMockController(ILogger<SuperHeroController> logger)
-        {
-            _logger = logger;
-            heros = new List<SuperHeroViewModel> {
+        private static List<SuperHeroViewModel> heros = new List<SuperHeroViewModel> {
                 new SuperHeroViewModel { Id = 1, FirstName = "Jeff", LastName = "Loveness", Name = "Ant-Man" },
                 new SuperHeroViewModel { Id = 2, FirstName = "Bob", LastName = "Kane", Name = "Batman" },
                 new SuperHeroViewModel { Id = 3, FirstName = "Tony", LastName = "Stark", Name = "Iron Man" }
             };
+        public SuperHeroMockController(ILogger<SuperHeroController> logger)
+        {
+            _logger = logger;
         }
 
         [HttpGet]
