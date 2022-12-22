@@ -11,9 +11,9 @@ namespace SuperHero.Infrastructure.Services
 {
     public interface ISuperHeroService
     {
-        Task<List<SuperHeroDto>?> GetSuperHeroes();
-        Task<List<SuperHeroDto>?> CreateSuperHero(SuperHeroDto hero);
-        Task<List<SuperHeroDto>?> UpdateSuperHero(SuperHeroDto hero);
-        Task<List<SuperHeroDto>?> DeleteSuperHero(int HeroId);
+        Task<List<SuperHeroViewModel>?> GetSuperHeroes();
+        Task<List<SuperHeroViewModel>?> CreateSuperHero(SuperHeroViewModel hero);
+        Task<List<SuperHeroViewModel>?> UpdateSuperHero(SuperHeroViewModel hero);
+        Task<List<SuperHeroViewModel>?> DeleteSuperHero(int HeroId);
     }
 }

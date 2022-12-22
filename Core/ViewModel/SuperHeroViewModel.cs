@@ -1,6 +1,6 @@
 ﻿namespace SuperHero.Core.EntitiesDto
 {
-    public class SuperHeroDto
+    public class SuperHeroViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

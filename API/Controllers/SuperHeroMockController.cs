@@ -8,14 +8,18 @@ namespace SuperHero.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SuperHeroController : ControllerBase
+    public class SuperHeroMockController : ControllerBase
     {
         private readonly ILogger<SuperHeroController> _logger;
-        private readonly ISuperHeroService _service;
-        public SuperHeroController(ILogger<SuperHeroController> logger, ISuperHeroService service) 
+        private List<SuperHeroViewModel> heros;
+        public SuperHeroMockController(ILogger<SuperHeroController> logger)
         {
             _logger = logger;
-            _service = service;
+            heros = new List<SuperHeroViewModel> {
+                new SuperHeroViewModel { Id = 1, FirstName = "Jeff", LastName = "Loveness", Name = "Ant-Man" },
+                new SuperHeroViewModel { Id = 2, FirstName = "Bob", LastName = "Kane", Name = "Batman" },
+                new SuperHeroViewModel { Id = 3, FirstName = "Tony", LastName = "Stark", Name = "Iron Man" }
+            };
         }
 
         [HttpGet]
@@ -24,8 +28,9 @@ namespace SuperHero.API.Controllers
             try
             {
                 _logger.LogInformation("GetHeroes");
-                return Ok(await _service.GetSuperHeroes());
-            }catch (Exception ex)
+                return Ok(heros);
+            }
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
                 return BadRequest(ex.Message);
@@ -38,7 +43,8 @@ namespace SuperHero.API.Controllers
             try
             {
                 _logger.LogInformation("Add SuperHero");
-                return Ok(await _service.CreateSuperHero(hero));
+                heros.Add(hero);
+                return Ok(heros);
             }
             catch (Exception ex)
             {
@@ -53,31 +59,34 @@ namespace SuperHero.API.Controllers
             try
             {
                 _logger.LogInformation("Update SuperHero");
-                var dbHeroes = await _service.UpdateSuperHero(hero);
+                var dbHeroes = heros.Where(hero => hero.Id == hero.Id).FirstOrDefault();
                 if (dbHeroes == null)
                     return NotFound("Hero not found");
 
-                return Ok(dbHeroes);
+                heros.RemoveAt(heros.IndexOf(dbHeroes));
+                heros.Add(hero);
+                return Ok(heros);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
                 return BadRequest(ex.Message);
             }
-            
+
         }
-    
+
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<SuperHeroViewModel>>> DeleteSuperHero(int id)
         {
             try
             {
                 _logger.LogInformation("Delete SuperHero");
-                var dbHeroes = await _service.DeleteSuperHero(id);
+                var dbHeroes = heros.Where(hero => hero.Id == id).FirstOrDefault();
                 if (dbHeroes == null)
                     return NotFound("Hero not found.");
 
-                return Ok(dbHeroes);
+                heros.RemoveAt(heros.IndexOf(dbHeroes));
+                return Ok(heros);
             }
             catch (Exception ex)
             {

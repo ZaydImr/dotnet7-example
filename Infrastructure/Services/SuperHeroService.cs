@@ -17,20 +17,20 @@ namespace SuperHero.Infrastructure.Services
             _mapper = mapper;
         }
 
-        public async Task<List<SuperHeroDto>?> GetSuperHeroes()
+        public async Task<List<SuperHeroViewModel>?> GetSuperHeroes()
         {
-            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroDto>(hero)).ToListAsync();
+            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroViewModel>(hero)).ToListAsync();
         }
 
-        public async Task<List<SuperHeroDto>?> CreateSuperHero(SuperHeroDto hero) 
+        public async Task<List<SuperHeroViewModel>?> CreateSuperHero(SuperHeroViewModel hero) 
         {
             _context.SuperHeroes.Add(_mapper.Map<SuperHeroModel>(hero));
             await _context.SaveChangesAsync();
 
-            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroDto>(hero)).ToListAsync();
+            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroViewModel>(hero)).ToListAsync();
         }
 
-        public async Task<List<SuperHeroDto>?> UpdateSuperHero(SuperHeroDto hero)
+        public async Task<List<SuperHeroViewModel>?> UpdateSuperHero(SuperHeroViewModel hero)
         {
             var dbHero = await _context.SuperHeroes.FindAsync(hero.Id);
             if (dbHero == null)
@@ -43,10 +43,10 @@ namespace SuperHero.Infrastructure.Services
 
             await _context.SaveChangesAsync();
 
-            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroDto>(hero)).ToListAsync();
+            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroViewModel>(hero)).ToListAsync();
         }
 
-        public async Task<List<SuperHeroDto>?> DeleteSuperHero(int HeroId)
+        public async Task<List<SuperHeroViewModel>?> DeleteSuperHero(int HeroId)
         {
             var dbHero = await _context.SuperHeroes.FindAsync(HeroId);
             if (dbHero == null)
@@ -55,7 +55,7 @@ namespace SuperHero.Infrastructure.Services
             _context.SuperHeroes.Remove(dbHero);
             await _context.SaveChangesAsync();
 
-            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroDto>(hero)).ToListAsync();
+            return await _context.SuperHeroes.Select(hero => _mapper.Map<SuperHeroViewModel>(hero)).ToListAsync();
         }
 
     }
