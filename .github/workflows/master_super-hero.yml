@@ -24,6 +24,3 @@ jobs:
 
       - name: dotnet publish
         run: dotnet publish -c Release -o D:\Server-Projects\dotnet7-example\myapp
-
-      - name: run app
-        run: D:\Server-Projects\dotnet7-example\myapp\API.exe
