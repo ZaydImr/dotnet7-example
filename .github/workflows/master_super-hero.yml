@@ -1,7 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
-name: Build and deploy ASP.Net Core app to Azure Web App - super-hero
+name: Build and deploy ASP.Net Core app to personal server
 
 on:
   push:
@@ -26,4 +23,7 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o D:\Server-Projects\dotnet7-example\myapp
+
+      - name: run app
+        run: D:\Server-Projects\dotnet7-example\myapp\API.exe
